@@ -1,0 +1,208 @@
+<div id="emi-app">
+<style>
+#emi-app{--pri:#4f46e5;--pri2:#7c3aed;--bg:#f4f6fb;--card:#fff;--txt:#1e293b;--mut:#64748b;--bd:#e2e8f0;--int:#f59e0b;--err:#dc2626;max-width:960px;margin:20px auto;padding:0 12px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--txt);box-sizing:border-box}
+#emi-app *{box-sizing:border-box}
+#emi-app .wrap{background:var(--card);border-radius:20px;box-shadow:0 10px 40px rgba(30,41,59,.12);overflow:hidden}
+#emi-app .hd{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+#emi-app .hd h2{margin:0;font-size:1.35rem;color:#fff}
+#emi-app .seg{display:inline-flex;background:rgba(255,255,255,.2);border-radius:10px;padding:3px}
+#emi-app .seg button{border:0;background:transparent;color:#fff;padding:6px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem}
+#emi-app .seg button.on{background:#fff;color:var(--pri)}
+#emi-app .bd{display:grid;grid-template-columns:1.1fr 1fr;gap:0}
+#emi-app .in{padding:26px}
+#emi-app .out{padding:26px;background:var(--bg)}
+#emi-app .fld{margin-bottom:26px}
+#emi-app .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+#emi-app label{font-weight:600;font-size:.95rem}
+#emi-app .box{display:flex;align-items:center;background:var(--bg);border:2px solid var(--bd);border-radius:10px;padding:0 10px;transition:.2s}
+#emi-app .box:focus-within{border-color:var(--pri)}
+#emi-app .box span{color:var(--mut);font-weight:600;font-size:.9rem}
+#emi-app .box input{border:0;background:transparent;outline:0;width:110px;padding:8px 6px;font-size:1rem;font-weight:700;color:var(--txt);text-align:right}
+#emi-app .box.bad{border-color:var(--err)}
+#emi-app input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--pri) var(--p,0%),var(--bd) var(--p,0%));outline:0;cursor:pointer}
+#emi-app input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--pri);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#emi-app input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid var(--pri)}
+#emi-app .rng{display:flex;justify-content:space-between;color:var(--mut);font-size:.75rem;margin-top:6px}
+#emi-app .tseg{display:inline-flex;background:var(--bg);border:2px solid var(--bd);border-radius:10px;padding:2px}
+#emi-app .tseg button{border:0;background:transparent;color:var(--mut);padding:4px 10px;border-radius:7px;cursor:pointer;font-weight:600;font-size:.8rem}
+#emi-app .tseg button.on{background:var(--pri);color:#fff}
+#emi-app .err{color:var(--err);font-size:.82rem;min-height:1.1em;margin-top:6px}
+#emi-app .emi{text-align:center;background:var(--card);border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(30,41,59,.08);margin-bottom:18px}
+#emi-app .emi small{color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.75rem}
+#emi-app .emi strong{display:block;font-size:2.4rem;line-height:1.2;margin-top:4px;color:var(--pri);word-break:break-all}
+#emi-app .ch{display:flex;align-items:center;gap:18px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+#emi-app svg{width:130px;height:130px;transform:rotate(-90deg)}
+#emi-app .lg div{display:flex;align-items:center;gap:8px;font-size:.88rem;margin:6px 0}
+#emi-app .lg i{width:12px;height:12px;border-radius:50%;display:inline-block}
+#emi-app .st{display:flex;justify-content:space-between;padding:12px 4px;border-top:1px solid var(--bd);font-size:.95rem}
+#emi-app .st b{font-size:1.05rem}
+#emi-app .ft{padding:12px 26px 18px;color:var(--mut);font-size:.75rem;text-align:center}
+@media(max-width:720px){#emi-app .bd{grid-template-columns:1fr}#emi-app .emi strong{font-size:2rem}#emi-app .in,#emi-app .out{padding:20px}}
+</style>
+
+<div class="wrap">
+  <div class="hd">
+    <h2>EMI &amp; Loan Calculator</h2>
+    <div class="seg" id="cur"><button class="on" data-c="₹">₹ INR</button><button data-c="$">$ USD</button></div>
+  </div>
+  <div class="bd">
+    <div class="in">
+      <div class="fld">
+        <div class="row"><label for="a-n">Loan Amount</label>
+          <div class="box" id="a-b"><span class="cs">₹</span><input id="a-n" type="number" inputmode="decimal" min="0" step="1000"></div></div>
+        <input id="a-r" type="range" min="10000" max="10000000" step="10000">
+        <div class="rng"><span id="a-lo"></span><span id="a-hi"></span></div>
+        <div class="err" id="a-e"></div>
+      </div>
+      <div class="fld">
+        <div class="row"><label for="r-n">Interest Rate (% p.a.)</label>
+          <div class="box" id="r-b"><input id="r-n" type="number" inputmode="decimal" min="0" max="50" step="0.1"><span>%</span></div></div>
+        <input id="r-r" type="range" min="0" max="30" step="0.1">
+        <div class="rng"><span>0%</span><span>30%</span></div>
+        <div class="err" id="r-e"></div>
+      </div>
+      <div class="fld">
+        <div class="row"><label for="t-n">Tenure</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="tseg" id="tu"><button data-u="y" class="on">Years</button><button data-u="m">Months</button></div>
+            <div class="box" id="t-b"><input id="t-n" type="number" inputmode="numeric" min="1" step="1"></div>
+          </div></div>
+        <input id="t-r" type="range" min="1" max="30" step="1">
+        <div class="rng"><span id="t-lo"></span><span id="t-hi"></span></div>
+        <div class="err" id="t-e"></div>
+      </div>
+    </div>
+    <div class="out">
+      <div class="emi"><small>Monthly EMI</small><strong id="o-emi">—</strong></div>
+      <div class="ch">
+        <svg viewBox="0 0 36 36" aria-label="Principal vs interest chart">
+          <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e2e8f0" stroke-width="5"/>
+          <circle id="d-p" cx="18" cy="18" r="15.9155" fill="none" stroke="#4f46e5" stroke-width="5" stroke-dasharray="0 100"/>
+          <circle id="d-i" cx="18" cy="18" r="15.9155" fill="none" stroke="#f59e0b" stroke-width="5" stroke-dasharray="0 100" stroke-dashoffset="0"/>
+        </svg>
+        <div class="lg">
+          <div><i style="background:#4f46e5"></i>Principal <b id="l-p">—</b></div>
+          <div><i style="background:#f59e0b"></i>Interest <b id="l-i">—</b></div>
+        </div>
+      </div>
+      <div class="st"><span>Principal Amount</span><b id="o-p">—</b></div>
+      <div class="st"><span>Total Interest Payable</span><b id="o-i">—</b></div>
+      <div class="st"><span>Total Amount Payable</span><b id="o-t">—</b></div>
+    </div>
+  </div>
+  <div class="ft">Results are estimates for information only. Actual lender terms, fees and rounding may differ.</div>
+</div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var cur="₹",unit="y";
+var A=$("a-n"),AR=$("a-r"),R=$("r-n"),RR=$("r-r"),T=$("t-n"),TR=$("t-r");
+
+function fmt(n){
+  return cur+new Intl.NumberFormat(cur==="₹"?"en-IN":"en-US",{maximumFractionDigits:0}).format(Math.round(n));
+}
+function short(n){
+  if(cur==="₹"){return n>=10000000?"₹"+(n/10000000)+" Cr":n>=100000?"₹"+(n/100000)+" L":"₹"+n;}
+  return n>=1000000?"$"+(n/1000000)+"M":"$"+(n/1000)+"K";
+}
+function fill(r){
+  var p=(r.value-r.min)/(r.max-r.min)*100;
+  r.style.setProperty("--p",Math.max(0,Math.min(100,p))+"%");
+}
+function setErr(id,boxId,msg){
+  $(id).textContent=msg||"";
+  $(boxId).className="box"+(msg?" bad":"");
+}
+function clearOut(){
+  ["o-emi","o-p","o-i","o-t","l-p","l-i"].forEach(function(i){$(i).textContent="—"});
+  $("d-p").setAttribute("stroke-dasharray","0 100");
+  $("d-i").setAttribute("stroke-dasharray","0 100");
+}
+function scaleSetup(){
+  var inr=cur==="₹";
+  AR.min=inr?10000:1000;AR.max=inr?10000000:1000000;AR.step=inr?10000:1000;
+  $("a-lo").textContent=short(+AR.min);$("a-hi").textContent=short(+AR.max);
+  document.querySelectorAll("#emi-app .cs").forEach(function(e){e.textContent=cur});
+  if(unit==="y"){TR.min=1;TR.max=30;$("t-lo").textContent="1 Yr";$("t-hi").textContent="30 Yrs";}
+  else{TR.min=1;TR.max=360;$("t-lo").textContent="1 Mo";$("t-hi").textContent="360 Mos";}
+}
+
+function calc(){
+  var P=parseFloat(A.value),r=parseFloat(R.value),t=parseFloat(T.value),ok=true;
+  if(A.value===""||isNaN(P)){setErr("a-e","a-b","Please enter a loan amount.");ok=false;}
+  else if(P<=0){setErr("a-e","a-b","Loan amount must be greater than 0.");ok=false;}
+  else if(P>1e10){setErr("a-e","a-b","Amount is too large.");ok=false;}
+  else setErr("a-e","a-b","");
+
+  if(R.value===""||isNaN(r)){setErr("r-e","r-b","Please enter an interest rate.");ok=false;}
+  else if(r<0){setErr("r-e","r-b","Rate cannot be negative.");ok=false;}
+  else if(r>100){setErr("r-e","r-b","Rate cannot exceed 100%.");ok=false;}
+  else setErr("r-e","r-b","");
+
+  var maxT=unit==="y"?50:600;
+  if(T.value===""||isNaN(t)){setErr("t-e","t-b","Please enter a tenure.");ok=false;}
+  else if(t<=0){setErr("t-e","t-b","Tenure must be at least 1.");ok=false;}
+  else if(t>maxT){setErr("t-e","t-b","Max tenure is "+maxT+(unit==="y"?" years.":" months."));ok=false;}
+  else setErr("t-e","t-b","");
+
+  if(!ok){clearOut();return;}
+
+  var N=unit==="y"?t*12:t,mr=r/12/100,emi;
+  if(mr===0){emi=P/N;}
+  else{var f=Math.pow(1+mr,N);emi=P*mr*f/(f-1);}
+  var total=emi*N,interest=total-P,pp=P/total*100;
+
+  $("o-emi").textContent=fmt(emi);
+  $("o-p").textContent=fmt(P);
+  $("o-i").textContent=fmt(interest);
+  $("o-t").textContent=fmt(total);
+  $("l-p").textContent=pp.toFixed(1)+"%";
+  $("l-i").textContent=(100-pp).toFixed(1)+"%";
+  $("d-p").setAttribute("stroke-dasharray",pp+" "+(100-pp));
+  $("d-i").setAttribute("stroke-dasharray",(100-pp)+" "+pp);
+  $("d-i").setAttribute("stroke-dashoffset",-pp);
+}
+
+function link(num,rng){
+  num.addEventListener("input",function(){
+    if(num.value!==""){rng.value=num.value;}
+    fill(rng);calc();
+  });
+  rng.addEventListener("input",function(){
+    num.value=rng.value;fill(rng);calc();
+  });
+}
+link(A,AR);link(R,RR);link(T,TR);
+
+$("cur").addEventListener("click",function(e){
+  var c=e.target.getAttribute("data-c");
+  if(!c||c===cur)return;
+  cur=c;
+  this.querySelectorAll("button").forEach(function(b){b.className=b.getAttribute("data-c")===c?"on":""});
+  scaleSetup();
+  A.value=cur==="₹"?2500000:50000;
+  AR.value=A.value;fill(AR);calc();
+});
+$("tu").addEventListener("click",function(e){
+  var u=e.target.getAttribute("data-u");
+  if(!u||u===unit)return;
+  var v=parseFloat(T.value);
+  unit=u;
+  this.querySelectorAll("button").forEach(function(b){b.className=b.getAttribute("data-u")===u?"on":""});
+  scaleSetup();
+  if(!isNaN(v)){
+    v=u==="m"?Math.round(v*12):Math.max(1,Math.round(v/12));
+    T.value=v;TR.value=v;
+  }
+  fill(TR);calc();
+});
+
+scaleSetup();
+A.value=2500000;AR.value=2500000;
+R.value=8.5;RR.value=8.5;
+T.value=5;TR.value=5;
+fill(AR);fill(RR);fill(TR);calc();
+})();
+</script>
+</div>
